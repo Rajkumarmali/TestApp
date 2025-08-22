@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Domain.Repositories;
@@ -35,6 +37,27 @@ public class StudentServices : ApplicationService, IStudent
         catch (Exception ex)
         {
             Logger.Error("Error while creating student", ex);
+            throw;
+        }
+    }
+    public async Task<List<GetStudentDto>> GetAllStudents()
+    {
+        try
+        {
+            var student = await _studentRepository.GetAllListAsync();
+            var result = student.Select(s => new GetStudentDto
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email,
+                PhoneNumber = s.PhoneNumber
+            }).ToList();
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Error while getting all students", ex);
             throw;
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using TestApp.DTOs;
@@ -8,4 +9,5 @@ namespace TestApp.Manager.interfaces;
 public interface IStudent : IApplicationService
 {
     Task<StudentCreateDto> CreateStudent(StudentCreateDto StudentModel);
+    Task<List<GetStudentDto>> GetAllStudents();
 }
