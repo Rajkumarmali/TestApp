@@ -61,4 +61,39 @@ public class StudentServices : ApplicationService, IStudent
             throw;
         }
     }
+
+    public async Task<StudentUpdateDto> UpdateStudent([FromBody] StudentUpdateDto dto)
+    {
+        try
+        {
+            var student = await _studentRepository.FirstOrDefaultAsync(s => s.Id == dto.Id);
+            student.FirstName = dto.FirstName;
+            student.LastName = dto.LastName;
+            student.PhoneNumber = dto.PhoneNumber;
+            student.Email = dto.Email;
+            await _studentRepository.UpdateAsync(student);
+            return dto;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Error while updating student", ex);
+            throw;
+        }
+    }
+
+    public async Task<string> DeleteStudent(long id)
+    {
+        try
+        {
+            var student = await _studentRepository.FirstOrDefaultAsync(s => s.Id == id);
+            await _studentRepository.DeleteAsync(student);
+            return $"Student with ID {id} deleted successfully.";
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Error while deleting student", ex);
+            throw;
+        }
+    }
 }
+

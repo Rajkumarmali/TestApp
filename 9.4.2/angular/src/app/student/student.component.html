@@ -21,10 +21,12 @@
                 <td>{{ student.email }}</td>
                 <td>{{ student.phoneNumber }}</td>
                 <td>
-                    <button class="btn btn-warning">
+                    <button class="btn btn-warning"
+                        (click)="openEditModal(student)">
                         <i class="bi bi-pencil-fill"></i> <!-- Edit icon -->
                     </button>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger"
+                        (click)="deleteStudent(student.id)">
                         <i class="bi bi-trash-fill"></i> <!-- Delete icon -->
                     </button>
                 </td>
@@ -82,3 +84,52 @@
     <!-- Modal backdrop -->
     <div class="modal-backdrop fade show" *ngIf="addModel"></div>
 </div>
+<!-- Edit Student Modal -->
+<div class="modal fade" [class.show]="editModel"
+    [ngStyle]="{'display': editModel ? 'block' : 'none'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Student</h5>
+                <button type="button" (click)="closeEditModal()"
+                    class="btn-close">X</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label>First Name</label>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="editStudent.firstName"
+                            name="editFirstName">
+                    </div>
+                    <div class="mb-3">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="editStudent.lastName"
+                            name="editLastName">
+                    </div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="email" class="form-control"
+                            [(ngModel)]="editStudent.email" name="editEmail">
+                    </div>
+                    <div class="mb-3">
+                        <label>Phone Number</label>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="editStudent.phoneNumber"
+                            name="editPhone">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    (click)="closeEditModal()">Close</button>
+                <button class="btn btn-primary"
+                    (click)="updateStudent()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="editModel"></div>

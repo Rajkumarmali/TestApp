@@ -10,4 +10,7 @@ public interface IStudent : IApplicationService
 {
     Task<StudentCreateDto> CreateStudent(StudentCreateDto StudentModel);
     Task<List<GetStudentDto>> GetAllStudents();
+    Task<StudentUpdateDto> UpdateStudent(StudentUpdateDto dto);
+    Task<string> DeleteStudent(long id);
+
 }
