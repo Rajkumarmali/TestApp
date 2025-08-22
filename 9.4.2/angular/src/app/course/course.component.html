@@ -1,0 +1,93 @@
+<!-- Course Table -->
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary" (click)="openAddModel()">Add
+            Course</button>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Course Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let course of courses; index as i">
+                <td>{{ i + 1 }}.</td>
+                <td>{{ course.name }}</td>
+                <td>
+                    <button class="btn btn-warning me-2"
+                        (click)="openEditModel(course)">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-danger"
+                        (click)="deleteCourse(course.id)">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" [class.show]="addModel"
+    [ngStyle]="{'display': addModel ? 'block' : 'none'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Course</h5>
+                <button type="button" class="btn-close"
+                    (click)="closeAddModel()">X</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="newCourse.name" name="name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    (click)="closeAddModel()">Close</button>
+                <button class="btn btn-primary"
+                    (click)="saveCourse()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="addModel"></div>
+
+<!-- Edit Modal -->
+<div class="modal fade" [class.show]="editModel"
+    [ngStyle]="{'display': editModel ? 'block' : 'none'}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Course</h5>
+                <button type="button" class="btn-close"
+                    (click)="closeEditModel()">X</button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" class="form-control"
+                            [(ngModel)]="editCourse.name" name="name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    (click)="closeEditModel()">Close</button>
+                <button class="btn btn-primary"
+                    (click)="updateCourse()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="editModel"></div>

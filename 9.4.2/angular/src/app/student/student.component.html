@@ -7,6 +7,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Sr.No</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -15,7 +16,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let student of students">
+            <tr *ngFor="let student of students; index as i">
+                <td>{{i+1}}.</td>
                 <td>{{ student.firstName }}</td>
                 <td>{{ student.lastName }}</td>
                 <td>{{ student.email }}</td>

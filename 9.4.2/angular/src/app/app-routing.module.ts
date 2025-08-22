@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { AppComponent } from './app.component';
 import {StudentComponent} from './student/student.component'
+import {CourseComponent} from './course/course.component'
 
 @NgModule({
     imports: [
@@ -47,6 +48,11 @@ import {StudentComponent} from './student/student.component'
                     {
                         path:'student',
                         component:StudentComponent,
+                        canActivate :[AppRouteGuard]
+                    },
+                    {
+                        path:'course',
+                        component:CourseComponent,
                         canActivate :[AppRouteGuard]
                     }
                 ]
