@@ -1,0 +1,84 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary" (click)="openAddModal()">Add
+            Student</button>
+    </div>
+    <!-- Student Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let student of students">
+                <td>{{ student.firstName }}</td>
+                <td>{{ student.lastName }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.phoneNumber }}</td>
+                <td>
+                    <button class="btn btn-warning">
+                        <i class="bi bi-pencil-fill"></i> <!-- Edit icon -->
+                    </button>
+                    <button class="btn btn-danger">
+                        <i class="bi bi-trash-fill"></i> <!-- Delete icon -->
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" [class.show]="addModel"
+        [ngStyle]="{'display': addModel ? 'block' : 'none'}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Student</h5>
+                    <button type="button" (click)="closeAddModel()"
+                        class="btn-close">X</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label>First Name</label>
+                            <input type="text" class="form-control"
+                                [(ngModel)]="newStudent.firstName"
+                                name="firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control"
+                                [(ngModel)]="newStudent.lastName"
+                                name="lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control"
+                                [(ngModel)]="newStudent.email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label>Phone Number</label>
+                            <input type="text" class="form-control"
+                                [(ngModel)]="newStudent.phoneNumber"
+                                name="phoneNumber">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary"
+                        (click)="closeAddModel()">Close</button>
+                    <button class="btn btn-primary"
+                        (click)="addStudent()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal backdrop -->
+    <div class="modal-backdrop fade show" *ngIf="addModel"></div>
+</div>

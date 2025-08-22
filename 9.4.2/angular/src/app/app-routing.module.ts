@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { AppComponent } from './app.component';
+import {StudentComponent} from './student/student.component'
 
 @NgModule({
     imports: [
@@ -43,6 +44,11 @@ import { AppComponent } from './app.component';
                         loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
                         canActivate: [AppRouteGuard]
                     },
+                    {
+                        path:'student',
+                        component:StudentComponent,
+                        canActivate :[AppRouteGuard]
+                    }
                 ]
             }
         ])
