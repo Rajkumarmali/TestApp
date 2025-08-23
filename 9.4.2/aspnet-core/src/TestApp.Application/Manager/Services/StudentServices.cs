@@ -95,5 +95,30 @@ public class StudentServices : ApplicationService, IStudent
             throw;
         }
     }
+    public async Task<GetStudentDto> GetStudentByEmain(string Email)
+    {
+        try
+        {
+            var student = await _studentRepository.FirstOrDefaultAsync(s => s.Email == Email);
+            var resutl = new GetStudentDto
+            {
+                Id = student.Id,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Email = student.Email,
+                PhoneNumber = student.PhoneNumber
+
+            };
+            return resutl;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error("Error while getting student by email", ex);
+            throw;
+        }
+
+
+    }
+
 }
 

@@ -1,0 +1,22 @@
+<div class="container mt-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Course Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let course of courses; index as i">
+                <td>{{ i + 1 }}.</td>
+                <td>{{ course.name }}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm">
+                        Enroll
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
