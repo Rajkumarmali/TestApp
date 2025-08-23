@@ -12,5 +12,6 @@ public interface IStudent : IApplicationService
     Task<List<GetStudentDto>> GetAllStudents();
     Task<StudentUpdateDto> UpdateStudent(StudentUpdateDto dto);
     Task<string> DeleteStudent(long id);
+    Task<GetStudentDto> GetStudentByEmain(string Email);
 
 }

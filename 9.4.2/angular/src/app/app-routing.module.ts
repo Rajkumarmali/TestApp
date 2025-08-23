@@ -4,6 +4,10 @@ import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { AppComponent } from './app.component';
 import {StudentComponent} from './student/student.component'
 import {CourseComponent} from './course/course.component'
+import {AllcourseComponent} from './allcourse/allcourse.component'
+import {StuProfileComponent} from './stu-profile/stu-profile.component'
+
+
 
 @NgModule({
     imports: [
@@ -54,8 +58,18 @@ import {CourseComponent} from './course/course.component'
                         path:'course',
                         component:CourseComponent,
                         canActivate :[AppRouteGuard]
+                    },
+                    {
+                        path:'allcourse',
+                        component:AllcourseComponent,
+                        canActivate :[AppRouteGuard]
+                    },
+                    {
+                        path:'stu-profile',
+                        component:StuProfileComponent,
+                        canActivate :[AppRouteGuard]
                     }
-                ]
+              ]
             }
         ])
     ],
