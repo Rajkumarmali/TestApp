@@ -1,88 +1,97 @@
 <div class="container mt-4">
+
+    <!-- Add Student Button -->
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-primary" (click)="openAddModal()">Add
-            Student</button>
+        <button class="btn btn-primary shadow-sm" (click)="openAddModal()">
+            <i class="bi bi-plus-lg me-1"></i> Add Student
+        </button>
     </div>
+
     <!-- Student Table -->
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sr.No</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let student of students; index as i">
-                <td>{{i+1}}.</td>
-                <td>{{ student.firstName }}</td>
-                <td>{{ student.lastName }}</td>
-                <td>{{ student.email }}</td>
-                <td>{{ student.phoneNumber }}</td>
-                <td>
-                    <button class="btn btn-sm btn-info text-white"
-                        (click)="loadStuProfileAndCourse(student.email)">
-                        <i class="bi bi-eye-fill"></i>
-                    </button>
-
-                    <!-- Edit Button -->
-                    <button class="btn btn-sm btn-warning text-white"
-                        (click)="openEditModal(student)">
-                        <i class="bi bi-pencil-fill"></i>
-                    </button>
-
-                    <!-- Delete Button -->
-                    <button class="btn btn-sm btn-danger"
-                        (click)="deleteStudent(student.id)">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Student List</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Sr.No.</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students; index as i">
+                        <td>{{ i+1 }}.</td>
+                        <td>{{ student.firstName }}</td>
+                        <td>{{ student.lastName }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.phoneNumber }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info me-1"
+                                (click)="loadStuProfileAndCourse(student.email)">
+                                <i class="bi bi-eye-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning me-1"
+                                (click)="openEditModal(student)">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                (click)="deleteStudent(student.id)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Add Student Modal -->
     <div class="modal fade" [class.show]="addModel"
         [ngStyle]="{'display': addModel ? 'block' : 'none'}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">Add New Student</h5>
-                    <button type="button" (click)="closeAddModel()"
-                        class="btn-close">X</button>
+                    <button type="button" class="btn-close btn-close-white"
+                        (click)="closeAddModel()">X</button>
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="mb-3">
-                            <label>First Name</label>
-                            <input type="text" class="form-control"
-                                [(ngModel)]="newStudent.firstName"
-                                name="firstName">
-                        </div>
-                        <div class="mb-3">
-                            <label>Last Name</label>
-                            <input type="text" class="form-control"
-                                [(ngModel)]="newStudent.lastName"
-                                name="lastName">
-                        </div>
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" class="form-control"
-                                [(ngModel)]="newStudent.email" name="email">
-                        </div>
-                        <div class="mb-3">
-                            <label>Phone Number</label>
-                            <input type="text" class="form-control"
-                                [(ngModel)]="newStudent.phoneNumber"
-                                name="phoneNumber">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="newStudent.firstName"
+                                    name="firstName">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="newStudent.lastName"
+                                    name="lastName">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control"
+                                    [(ngModel)]="newStudent.email" name="email">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="newStudent.phoneNumber"
+                                    name="phoneNumber">
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary"
+                    <button class="btn btn-light"
                         (click)="closeAddModel()">Close</button>
                     <button class="btn btn-primary"
                         (click)="addStudent()">Save</button>
@@ -90,149 +99,166 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal backdrop -->
     <div class="modal-backdrop fade show" *ngIf="addModel"></div>
-</div>
-<!-- Edit Student Modal -->
-<div class="modal fade" [class.show]="editModel"
-    [ngStyle]="{'display': editModel ? 'block' : 'none'}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Student</h5>
-                <button type="button" (click)="closeEditModal()"
-                    class="btn-close">X</button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label>First Name</label>
-                        <input type="text" class="form-control"
-                            [(ngModel)]="editStudent.firstName"
-                            name="editFirstName">
-                    </div>
-                    <div class="mb-3">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control"
-                            [(ngModel)]="editStudent.lastName"
-                            name="editLastName">
-                    </div>
-                    <div class="mb-3">
-                        <label>Email</label>
-                        <input type="email" class="form-control"
-                            [(ngModel)]="editStudent.email" name="editEmail">
-                    </div>
-                    <div class="mb-3">
-                        <label>Phone Number</label>
-                        <input type="text" class="form-control"
-                            [(ngModel)]="editStudent.phoneNumber"
-                            name="editPhone">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary"
-                    (click)="closeEditModal()">Close</button>
-                <button class="btn btn-primary"
-                    (click)="updateStudent()">Update</button>
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" [class.show]="editModel"
+        [ngStyle]="{'display': editModel ? 'block' : 'none'}">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">Edit Student</h5>
+                    <button type="button" class="btn-close"
+                        (click)="closeEditModal()">X</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="editStudent.firstName"
+                                    name="editFirstName">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="editStudent.lastName"
+                                    name="editLastName">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control"
+                                    [(ngModel)]="editStudent.email"
+                                    name="editEmail">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="editStudent.phoneNumber"
+                                    name="editPhone">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-light"
+                        (click)="closeEditModal()">Close</button>
+                    <button class="btn btn-warning text-white"
+                        (click)="updateStudent()">Update</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="modal-backdrop fade show" *ngIf="editModel"></div>
 
-<!-- Edit Modal Backdrop -->
-<div class="modal-backdrop fade show" *ngIf="editModel"></div>
+    <!-- View Student Modal -->
+    <!-- View Student Modal -->
+    <div class="modal fade" [class.show]="viewModel"
+        [ngStyle]="{'display': viewModel ? 'block' : 'none'}"
+        tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0 rounded-3">
 
-<!-- View Student Modal -->
-<div class="modal fade" [class.show]="viewModel"
-    [ngStyle]="{'display': viewModel ? 'block' : 'none'}">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Student Profile</h5>
-                <button type="button" class="btn-close"
-                    (click)="closeViewModal()">X</button>
-            </div>
-            <div class="modal-body" *ngIf="studentProfile">
-                <div class="row">
-                    <!-- Left Profile Card -->
-                    <div
-                        class="col-md-4 text-center p-4 bg-primary text-white rounded-start">
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                            class="img-fluid rounded-circle mb-3"
-                            width="120" height="120" alt="Profile">
-                        <h5>{{studentProfile.firstName}}
-                            {{studentProfile.lastName}}</h5>
-                        <p>{{studentProfile.email}}</p>
-                    </div>
+                <!-- Header -->
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Student Profile</h5>
+                    <button type="button" class="btn-close btn-close-white"
+                        (click)="closeViewModal()">X</button>
+                </div>
 
-                    <!-- Right Profile Info -->
-                    <div class="col-md-8 p-4">
-                        <div
-                            class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                            <h5 class="text-primary mb-0">Profile
-                                Information</h5>
+                <!-- Body -->
+                <div class="modal-body" *ngIf="studentProfile">
+                    <!-- Student Info -->
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                                alt="Profile"
+                                class="rounded-circle border border-3 border-light shadow-sm mb-3"
+                                width="120" height="120">
+                            <h5 class="mb-1">{{ studentProfile.firstName }} {{
+                                studentProfile.lastName }}</h5>
+                            <p class="text-muted small">{{ studentProfile.email
+                                }}</p>
                         </div>
 
-                        <div class="row mb-2">
-                            <div class="col-sm-6"><strong>First Name:</strong>
-                                {{studentProfile.firstName}}</div>
-                            <div class="col-sm-6"><strong>Last Name:</strong>
-                                {{studentProfile.lastName}}</div>
-                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <strong>First Name:</strong>
+                                    <p class="text-muted">{{
+                                        studentProfile.firstName }}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <strong>Last Name:</strong>
+                                    <p class="text-muted">{{
+                                        studentProfile.lastName }}</p>
+                                </div>
+                            </div>
 
-                        <div class="row mb-2">
-                            <div class="col-sm-6"><strong>Email:</strong>
-                                {{studentProfile.email}}</div>
-                            <div class="col-sm-6"><strong>Phone:</strong>
-                                {{studentProfile.phoneNumber}}</div>
-                        </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <strong>Email:</strong>
+                                    <p class="text-muted">{{
+                                        studentProfile.email }}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <strong>Phone:</strong>
+                                    <p class="text-muted">{{
+                                        studentProfile.phoneNumber }}</p>
+                                </div>
+                            </div>
 
-                        <div class="row mb-2">
-                            <div class="col-sm-6"><strong>Student ID:</strong>
-                                {{studentProfile.id}}</div>
-                            <div class="col-sm-6">
-                                <strong>Status:</strong>
-                                <span class="badge bg-success">Active</span>
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <strong>Student ID:</strong>
+                                    <p class="text-muted">{{ studentProfile.id
+                                        }}</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <strong>Status:</strong>
+                                    <span class="badge bg-success">Active</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="text-end">
-                        </div>
+                    <!-- Enrolled Courses -->
+                    <hr>
+                    <h6 class="mb-3 text-primary">
+                        <i class="bi bi-book"></i> Enrolled Courses
+                    </h6>
+                    <div style="max-height: 250px; overflow-y: auto;"
+                        class="border rounded">
+                        <table class="table table-sm table-bordered mb-0"
+                            *ngIf="studentCourses.length > 0; else noCourses">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sr.No.</th>
+                                    <th>Course Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let course of studentCourses; let i = index">
+                                    <td>{{ i+1 }}.</td>
+                                    <td>{{ course.name }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ng-template #noCourses>
+                            <p class="text-muted text-center py-3">No courses
+                                enrolled.</p>
+                        </ng-template>
                     </div>
                 </div>
 
-                <hr>
-
-                <!-- Enrolled Courses -->
-                <h6>Enrolled Courses</h6>
-                <table class="table table-bordered mt-3"
-                    *ngIf="studentCourses.length > 0; else noCourses">
-                    <thead>
-                        <tr>
-                            <th>Sr.No</th>
-                            <th>Course Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            *ngFor="let course of studentCourses; let i = index">
-                            <td>{{ i+1 }}</td>
-                            <td>{{ course.name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <ng-template #noCourses>
-                    <p class="text-muted">No courses enrolled.</p>
-                </ng-template>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary"
-                    (click)="closeViewModal()">Close</button>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-light"
+                        (click)="closeViewModal()">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>

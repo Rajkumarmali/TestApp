@@ -1,62 +1,73 @@
 <!-- Course Table -->
 <div class="container mt-4">
+
+    <!-- Add Course Button -->
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-primary" (click)="openAddModel()">Add
-            Course</button>
+        <button class="btn btn-primary shadow-sm" (click)="openAddModel()">
+            <i class="bi bi-plus-lg me-1"></i> Add Course
+        </button>
     </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sr.No</th>
-                <th>Course Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let course of courses; index as i">
-                <td>{{ i + 1 }}.</td>
-                <td>{{ course.name }}</td>
-                <td>
-                    <button class="btn btn-sm btn-info text-white"
-                        (click)="loadCourseDetandStu(course.id)">
-                        <i class="bi bi-eye-fill"></i>
-                    </button>
-                    <button class="btn btn-sm btn-warning text-white"
-                        (click)="openEditModel(course)">
-                        <i class="bi bi-pencil-fill"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger"
-                        (click)="deleteCourse(course.id)">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Course List Card -->
+    <div class="card shadow-sm rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Course List</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sr.No.</th>
+                        <th>Course Name</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let course of courses; index as i">
+                        <td>{{ i + 1 }}.</td>
+                        <td>{{ course.name }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info me-1"
+                                (click)="loadCourseDetandStu(course.id)">
+                                <i class="bi bi-eye-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning me-1"
+                                (click)="openEditModel(course)">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                (click)="deleteCourse(course.id)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<!-- Add Modal -->
+<!-- Add Course Modal -->
 <div class="modal fade" [class.show]="addModel"
     [ngStyle]="{'display': addModel ? 'block' : 'none'}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-3">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Add New Course</h5>
-                <button type="button" class="btn-close"
+                <button type="button" class="btn-close btn-close-white"
                     (click)="closeAddModel()">X</button>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label>Name</label>
+                        <label class="form-label">Course Name</label>
                         <input type="text" class="form-control"
                             [(ngModel)]="newCourse.name" name="name">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary"
+                <button class="btn btn-light"
                     (click)="closeAddModel()">Close</button>
                 <button class="btn btn-primary"
                     (click)="saveCourse()">Save</button>
@@ -66,12 +77,12 @@
 </div>
 <div class="modal-backdrop fade show" *ngIf="addModel"></div>
 
-<!-- Edit Modal -->
+<!-- Edit Course Modal -->
 <div class="modal fade" [class.show]="editModel"
     [ngStyle]="{'display': editModel ? 'block' : 'none'}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-3">
+            <div class="modal-header bg-warning text-dark">
                 <h5 class="modal-title">Edit Course</h5>
                 <button type="button" class="btn-close"
                     (click)="closeEditModel()">X</button>
@@ -79,16 +90,16 @@
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label>Name</label>
+                        <label class="form-label">Course Name</label>
                         <input type="text" class="form-control"
                             [(ngModel)]="editCourse.name" name="name">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary"
+                <button class="btn btn-light"
                     (click)="closeEditModel()">Close</button>
-                <button class="btn btn-primary"
+                <button class="btn btn-warning text-white"
                     (click)="updateCourse()">Update</button>
             </div>
         </div>
@@ -96,22 +107,22 @@
 </div>
 <div class="modal-backdrop fade show" *ngIf="editModel"></div>
 
-<!-- View Modal -->
+<!-- View Enrolled Students Modal -->
 <div class="modal fade" [class.show]="viewModel"
     [ngStyle]="{'display': viewModel ? 'block' : 'none'}">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0 rounded-3">
             <div class="modal-header bg-info text-white">
                 <h5 class="modal-title">Enrolled Students</h5>
-                <button type="button" class="btn-close text-white"
+                <button type="button" class="btn-close btn-close-white"
                     (click)="closeViewModel()">X</button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-striped"
+                <table class="table table-bordered table-hover align-middle"
                     *ngIf="EnrolledStudents.length > 0; else noStudents">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th>Sr.No.</th>
                             <th>Student Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -119,7 +130,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let stu of EnrolledStudents; let i = index">
-                            <td>{{ i + 1 }}</td>
+                            <td>{{ i + 1 }}.</td>
                             <td>{{ stu.firstName }} {{ stu.lastName }}</td>
                             <td>{{ stu.email }}</td>
                             <td>{{ stu.phoneNumber }}</td>
@@ -127,15 +138,15 @@
                     </tbody>
                 </table>
 
-                <!-- No Students Template -->
+                <!-- Empty State -->
                 <ng-template #noStudents>
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-warning text-center mb-0">
                         No students enrolled in this course.
                     </div>
                 </ng-template>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary"
+                <button class="btn btn-light"
                     (click)="closeViewModel()">Close</button>
             </div>
         </div>

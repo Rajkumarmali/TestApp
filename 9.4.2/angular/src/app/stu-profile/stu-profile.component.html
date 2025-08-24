@@ -1,17 +1,24 @@
 <div class="container mt-5" *ngIf="profile">
   <div class="row justify-content-center">
     <div class="col-lg-10">
-      <div class="card shadow border-0 rounded-4 overflow-hidden">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
         <div class="row g-0">
+
           <!-- Left Sidebar -->
           <div
-            class="col-md-4 bg-primary text-white text-center d-flex flex-column justify-content-center p-4">
+            class="col-md-4 bg-gradient bg-primary text-white text-center d-flex flex-column align-items-center p-4">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
               alt="Profile"
-              class="rounded-circle border border-3 border-white mb-3"
-              width="120" height="120">
-            <h4>{{ profile.firstName }} {{ profile.lastName }}</h4>
-            <p class="small">{{ profile.email }}</p>
+              class="rounded-circle border border-4 border-white shadow mb-3"
+              width="130" height="130">
+
+            <h4 class="fw-bold">{{ profile.firstName }} {{ profile.lastName
+              }}</h4>
+            <p class="small mb-2"><i class="bi bi-envelope"></i> {{
+              profile.email }}</p>
+            <span class="badge bg-light text-primary px-3 py-2">
+              <i class="bi bi-person-badge"></i> Student
+            </span>
           </div>
 
           <!-- Right Content -->
@@ -19,42 +26,42 @@
             <div class="card-body p-4">
               <div
                 class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                <h5 class="text-primary mb-0">Profile Information</h5>
-                <button class="btn btn-primary btn-sm" (click)="viewCourse()">
-                  <i class="bi bi-book"></i> View Your Course
+                <h5 class="text-primary fw-bold mb-0"><i
+                    class="bi bi-person-lines-fill"></i> Profile
+                  Information</h5>
+                <button class="btn btn-outline-primary btn-sm rounded-pill"
+                  (click)="viewCourse()">
+                  <i class="bi bi-book"></i> View Your Courses
                 </button>
               </div>
 
-              <div class="row mb-3">
+              <!-- Info Grid -->
+              <div class="row gy-3">
                 <div class="col-sm-6">
-                  <strong>First Name</strong>
+                  <strong><i class="bi bi-person"></i> First Name</strong>
                   <p class="text-muted">{{ profile.firstName }}</p>
                 </div>
                 <div class="col-sm-6">
-                  <strong>Last Name</strong>
+                  <strong><i class="bi bi-person"></i> Last Name</strong>
                   <p class="text-muted">{{ profile.lastName }}</p>
                 </div>
-              </div>
 
-              <div class="row mb-3">
                 <div class="col-sm-6">
-                  <strong>Email</strong>
+                  <strong><i class="bi bi-envelope"></i> Email</strong>
                   <p class="text-muted">{{ profile.email }}</p>
                 </div>
                 <div class="col-sm-6">
-                  <strong>Phone Number</strong>
+                  <strong><i class="bi bi-telephone"></i> Phone Number</strong>
                   <p class="text-muted">{{ profile.phoneNumber }}</p>
                 </div>
-              </div>
 
-              <div class="row mb-3">
                 <div class="col-sm-6">
-                  <strong>Student ID</strong>
+                  <strong><i class="bi bi-person-badge"></i> Student ID</strong>
                   <p class="text-muted">{{ profile.id }}</p>
                 </div>
                 <div class="col-sm-6">
-                  <strong>Status</strong>
-                  <p class="badge bg-success">Active</p>
+                  <strong><i class="bi bi-check-circle"></i> Status</strong>
+                  <p><span class="badge bg-success px-3 py-2">Active</span></p>
                 </div>
               </div>
             </div>
@@ -65,32 +72,64 @@
   </div>
 </div>
 
+<!-- Enrolled Courses Modal -->
 <div class="modal fade show d-block" tabindex="-1" *ngIf="enrolleModel">
   <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content rounded-3 shadow">
-      <div class="modal-header">
-        <h5 class="modal-title text-primary">Enrolled Courses</h5>
-        <button type="button" class="btn-close"
-          (click)="enrolleModel=false">X</button>
-      </div>
+    <div class="modal-content rounded-4 shadow-lg">
 
-      <div class="modal-body">
-        <div *ngIf="enrolledCourse.length > 0; else noCourse">
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let c of enrolledCourse">
-              <i class="bi bi-bookmark text-primary"></i> {{ c.name }}
-            </li>
-          </ul>
+      <!-- Body (scrollable) -->
+      <div class="modal fade show d-block" tabindex="-1" *ngIf="enrolleModel">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content rounded-4 shadow-lg">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">
+                <i class="bi bi-journal-check"></i> Enrolled Courses
+              </h5>
+              <button type="button" class="btn-close btn-close-white"
+                (click)="enrolleModel=false">X</button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body p-0"
+              style="max-height: 350px; overflow-y: auto;">
+              <div *ngIf="enrolledCourse.length > 0; else noCourse">
+                <table class="table table-hover table-bordered m-0">
+                  <thead class="table-light sticky-top">
+                    <tr>
+                      <th style="width: 80px;">Sr.No</th>
+                      <th>Course Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let c of enrolledCourse; let i = index">
+                      <td class="text-center fw-bold">{{ i + 1 }}.</td>
+                      <td>
+                        <i class="bi bi-book-fill text-primary me-2"></i>
+
+                        {{ c.name }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <ng-template #noCourse>
+                <div class="alert alert-warning text-center m-3">
+                  <i class="bi bi-exclamation-circle"></i> No courses enrolled.
+                </div>
+              </ng-template>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+              <button class="btn btn-secondary rounded-pill px-4"
+                (click)="enrolleModel=false">
+                <i class="bi bi-x-circle"></i> Close
+              </button>
+            </div>
+
+          </div>
         </div>
-        <ng-template #noCourse>
-          <p class="text-muted text-center">No courses enrolled.</p>
-        </ng-template>
       </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary"
-          (click)="enrolleModel=false">Close</button>
-      </div>
-    </div>
-  </div>
-</div>

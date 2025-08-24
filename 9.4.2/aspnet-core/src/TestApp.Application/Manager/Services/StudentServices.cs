@@ -114,6 +114,12 @@ public class StudentServices : ApplicationService, IStudent
         try
         {
             var student = await _studentRepository.FirstOrDefaultAsync(s => s.Id == id);
+            var studentEmail = student.Email;
+            var user = await _userManager.FindByEmailAsync(student.Email);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+            }
             await _studentRepository.DeleteAsync(student);
             return $"Student with ID {id} deleted successfully.";
         }
