@@ -107,7 +107,6 @@ public class StudentServices : ApplicationService, IStudent
                 LastName = student.LastName,
                 Email = student.Email,
                 PhoneNumber = student.PhoneNumber
-
             };
             return resutl;
         }
@@ -116,9 +115,6 @@ public class StudentServices : ApplicationService, IStudent
             Logger.Error("Error while getting student by email", ex);
             throw;
         }
-
-
     }
-
 }
 
