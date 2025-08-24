@@ -23,13 +23,21 @@
                 <td>{{ student.email }}</td>
                 <td>{{ student.phoneNumber }}</td>
                 <td>
-                    <button class="btn btn-warning"
-                        (click)="openEditModal(student)">
-                        <i class="bi bi-pencil-fill"></i> <!-- Edit icon -->
+                    <button class="btn btn-sm btn-info text-white"
+                        (click)="loadStuProfileAndCourse(student.email)">
+                        <i class="bi bi-eye-fill"></i>
                     </button>
-                    <button class="btn btn-danger"
+
+                    <!-- Edit Button -->
+                    <button class="btn btn-sm btn-warning text-white"
+                        (click)="openEditModal(student)">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+
+                    <!-- Delete Button -->
+                    <button class="btn btn-sm btn-danger"
                         (click)="deleteStudent(student.id)">
-                        <i class="bi bi-trash-fill"></i> <!-- Delete icon -->
+                        <i class="bi bi-trash-fill"></i>
                     </button>
                 </td>
             </tr>
@@ -135,3 +143,96 @@
 
 <!-- Edit Modal Backdrop -->
 <div class="modal-backdrop fade show" *ngIf="editModel"></div>
+
+<!-- View Student Modal -->
+<div class="modal fade" [class.show]="viewModel"
+    [ngStyle]="{'display': viewModel ? 'block' : 'none'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Profile</h5>
+                <button type="button" class="btn-close"
+                    (click)="closeViewModal()">X</button>
+            </div>
+            <div class="modal-body" *ngIf="studentProfile">
+                <div class="row">
+                    <!-- Left Profile Card -->
+                    <div
+                        class="col-md-4 text-center p-4 bg-primary text-white rounded-start">
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                            class="img-fluid rounded-circle mb-3"
+                            width="120" height="120" alt="Profile">
+                        <h5>{{studentProfile.firstName}}
+                            {{studentProfile.lastName}}</h5>
+                        <p>{{studentProfile.email}}</p>
+                    </div>
+
+                    <!-- Right Profile Info -->
+                    <div class="col-md-8 p-4">
+                        <div
+                            class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                            <h5 class="text-primary mb-0">Profile
+                                Information</h5>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>First Name:</strong>
+                                {{studentProfile.firstName}}</div>
+                            <div class="col-sm-6"><strong>Last Name:</strong>
+                                {{studentProfile.lastName}}</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Email:</strong>
+                                {{studentProfile.email}}</div>
+                            <div class="col-sm-6"><strong>Phone:</strong>
+                                {{studentProfile.phoneNumber}}</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-sm-6"><strong>Student ID:</strong>
+                                {{studentProfile.id}}</div>
+                            <div class="col-sm-6">
+                                <strong>Status:</strong>
+                                <span class="badge bg-success">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Enrolled Courses -->
+                <h6>Enrolled Courses</h6>
+                <table class="table table-bordered mt-3"
+                    *ngIf="studentCourses.length > 0; else noCourses">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Course Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let course of studentCourses; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ course.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #noCourses>
+                    <p class="text-muted">No courses enrolled.</p>
+                </ng-template>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    (click)="closeViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

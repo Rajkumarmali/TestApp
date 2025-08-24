@@ -12,9 +12,16 @@
                 <td>{{ i + 1 }}.</td>
                 <td>{{ course.name }}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm">
-                        Enroll
-                    </button>
+                    <ng-container *ngIf="isEnrolled(course); else notEnrolled">
+                        <button class="btn btn-success btn-sm" disabled>✅
+                            Enrolled</button>
+                    </ng-container>
+                    <ng-template #notEnrolled>
+                        <button class="btn btn-primary btn-sm"
+                            (click)="enrollCourse(course.id)">
+                            Enroll
+                        </button>
+                    </ng-template>
                 </td>
             </tr>
         </tbody>

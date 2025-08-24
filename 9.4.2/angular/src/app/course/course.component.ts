@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@node_modules/@angular/common';
 import { FormsModule } from '@node_modules/@angular/forms';
-import { CourseServicesServiceProxy, CreateCouresDto, UpdateCourseDto } from '@shared/service-proxies/service-proxies';
+import { CourseServicesServiceProxy, CreateCouresDto, StuCourseServicesServiceProxy, UpdateCourseDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-course',
@@ -12,8 +12,11 @@ import { CourseServicesServiceProxy, CreateCouresDto, UpdateCourseDto } from '@s
 })
 export class CourseComponent implements OnInit{
    courses:any[] =[]
+   EnrolledStudents:any[]=[]
    addModel:boolean = false;
    editModel:boolean=false;
+   viewModel:boolean=false;
+
 
    newCourse={
        name:'',
@@ -23,7 +26,7 @@ export class CourseComponent implements OnInit{
     name:''
    }
 
-   constructor(private courseService:CourseServicesServiceProxy,private changeDetector: ChangeDetectorRef){}
+   constructor(private stuCourseService:StuCourseServicesServiceProxy,private courseService:CourseServicesServiceProxy,private changeDetector: ChangeDetectorRef){}
    ngOnInit(){
      this.loadCourse();
    }
@@ -95,4 +98,21 @@ export class CourseComponent implements OnInit{
           }
        })
    }
+    loadCourseDetandStu(id:number):void{
+       this.stuCourseService.getAllEnrolledStudents(id).subscribe({
+        next:(res:any)=>{
+          this.EnrolledStudents = res;
+          this.viewModel = true;
+          this.changeDetector.detectChanges();
+          console.log(this.EnrolledStudents)
+        },
+        error:(err)=>{
+          console.log(err);
+        }
+       })
+    }
+
+    closeViewModel(){
+      this.viewModel = false;
+    }
 }

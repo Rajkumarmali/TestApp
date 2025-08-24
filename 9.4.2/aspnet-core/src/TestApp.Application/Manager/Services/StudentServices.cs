@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Domain.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TestApp.Authorization.Roles;
+using TestApp.Authorization.Users;
 using TestApp.DTOs;
 using TestApp.Manager.interfaces;
 using TestApp.Models;
@@ -15,14 +18,39 @@ public class StudentServices : ApplicationService, IStudent
 {
 
     private readonly IRepository<Student, long> _studentRepository;
-    public StudentServices(IRepository<Student, long> studentRepository)
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<Role> _roleManager;
+
+    public StudentServices(IRepository<Student, long> studentRepository, UserManager userManager,
+        RoleManager roleManager)
     {
         _studentRepository = studentRepository;
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
     public async Task<StudentCreateDto> CreateStudent([FromBody] StudentCreateDto dto)
     {
         try
         {
+            var user = new User
+            {
+                TenantId = AbpSession.TenantId,
+                Name = dto.FirstName,
+                Surname = dto.LastName,
+                EmailAddress = dto.Email,
+                UserName = dto.Email,
+                IsEmailConfirmed = true,
+                IsActive = true
+            };
+
+            var result = await _userManager.CreateAsync(user, "Test@123");
+            if (!result.Succeeded)
+            {
+                throw new Exception(string.Join("; ", result.Errors.Select(e => e.Description)));
+            }
+            await _userManager.AddToRoleAsync(user, "Student");
+
+
             var Student = new Student
             {
                 TenantId = AbpSession.TenantId ?? 1,
@@ -107,7 +135,6 @@ public class StudentServices : ApplicationService, IStudent
                 LastName = student.LastName,
                 Email = student.Email,
                 PhoneNumber = student.PhoneNumber
-
             };
             return resutl;
         }
@@ -116,9 +143,6 @@ public class StudentServices : ApplicationService, IStudent
             Logger.Error("Error while getting student by email", ex);
             throw;
         }
-
-
     }
-
 }
 

@@ -25,7 +25,7 @@ public class CourseServices : ApplicationService, ICourse
         {
             var course = new Course
             {
-                TenantId = 1,
+                TenantId = AbpSession.TenantId ?? 1,
                 Name = dto.Name
             };
             await _courseRepository.InsertAsync(course);

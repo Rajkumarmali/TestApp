@@ -18,11 +18,15 @@
                 <td>{{ i + 1 }}.</td>
                 <td>{{ course.name }}</td>
                 <td>
-                    <button class="btn btn-warning me-2"
+                    <button class="btn btn-sm btn-info text-white"
+                        (click)="loadCourseDetandStu(course.id)">
+                        <i class="bi bi-eye-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-warning text-white"
                         (click)="openEditModel(course)">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
-                    <button class="btn btn-danger"
+                    <button class="btn btn-sm btn-danger"
                         (click)="deleteCourse(course.id)">
                         <i class="bi bi-trash-fill"></i>
                     </button>
@@ -91,3 +95,50 @@
     </div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="editModel"></div>
+
+<!-- View Modal -->
+<div class="modal fade" [class.show]="viewModel"
+    [ngStyle]="{'display': viewModel ? 'block' : 'none'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Enrolled Students</h5>
+                <button type="button" class="btn-close text-white"
+                    (click)="closeViewModel()">X</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped"
+                    *ngIf="EnrolledStudents.length > 0; else noStudents">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let stu of EnrolledStudents; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ stu.firstName }} {{ stu.lastName }}</td>
+                            <td>{{ stu.email }}</td>
+                            <td>{{ stu.phoneNumber }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- No Students Template -->
+                <ng-template #noStudents>
+                    <div class="alert alert-warning text-center">
+                        No students enrolled in this course.
+                    </div>
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    (click)="closeViewModel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="viewModel"></div>

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { StudentCreateDto, StudentServicesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { StuCourseServicesServiceProxy, StudentCreateDto, StudentServicesServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-student',
@@ -12,8 +12,11 @@ import { StudentCreateDto, StudentServicesServiceProxy } from '@shared/service-p
 })
 export class StudentComponent implements OnInit {
   students: any[] = [];
+  studentProfile:any=null;
+  studentCourses:any[]=[];
   addModel: boolean = false;
   editModel: boolean = false;
+  viewModel: boolean = false;
   editStudent: any = { id: 0, firstName: '', lastName: '', email: '', phoneNumber: '' };
 
   newStudent = {
@@ -25,6 +28,8 @@ export class StudentComponent implements OnInit {
 
   constructor(
     private studentService: StudentServicesServiceProxy,
+    private studentServices:StudentServicesServiceProxy,
+    private stuCourseServices:StuCourseServicesServiceProxy,
     private changeDetector: ChangeDetectorRef
   ) {}
 
@@ -61,6 +66,12 @@ export class StudentComponent implements OnInit {
   closeEditModal(){
     this.editModel = false;
   }
+
+  closeViewModal() {
+  this.viewModel = false;
+  this.studentProfile = null;
+  this.studentCourses = [];
+}
 
   addStudent(){
     const studentDto = new StudentCreateDto();
@@ -100,5 +111,30 @@ export class StudentComponent implements OnInit {
               console.error('Error deleting student:', err)
             }
            })
+    }
+    loadStuProfileAndCourse(email):void{
+     this.studentServices.getStudentByEmain(email).subscribe({
+        next:(res:any)=>{
+          this.viewModel = true;
+            this.studentProfile =res;
+            this.changeDetector.detectChanges();
+            console.log(this.studentProfile)
+
+        } ,
+        error:(err)=>{
+          console.log(err);
+        }
+       })
+      this.stuCourseServices.getEnrolledCourses(email).subscribe({
+        next:(res)=>{
+          this.studentCourses = res;
+          this.changeDetector.detectChanges();
+          console.log(this.studentCourses);
+
+        },
+        error:(err)=>{
+          console.log(err);
+        }
+      })
     }
 }

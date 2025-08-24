@@ -1,34 +1,75 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CommonModule } from '@node_modules/@angular/common';
-import { CourseServicesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CommonModule } from '@angular/common';
+import { CourseServicesServiceProxy, StuCourseServicesServiceProxy, SessionServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-allcourse',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './allcourse.component.html',
-  styleUrl: './allcourse.component.css'
+  styleUrls: ['./allcourse.component.css']
 })
 export class AllcourseComponent implements OnInit {
 
-     constructor(private courseService:CourseServicesServiceProxy,private changeDetector: ChangeDetectorRef){}
-     courses:any[]=[];
+  constructor(
+    private courseService: CourseServicesServiceProxy,
+    private stuCourseService: StuCourseServicesServiceProxy,
+    private sessionService: SessionServiceProxy,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
+  courses: any[] = [];
+  enrolledCourses: any[] = [];
+  email: string = '';
 
-     ngOnInit():void{
-         this.loadCourse();
-     }
+  ngOnInit(): void {
+    this.loadEmailAndCourses();
+  }
 
-     loadCourse(){
-           this.courseService.getAllCourses().subscribe({
-            next:(res:any)=>{
-                  this.courses = res;
-                  console.log(this.courses);
-                  this.changeDetector.detectChanges();
-            },
-            error:(err)=>{
-              console.log(err);
-            }
-           })
-     }
+  loadEmailAndCourses() {
+    this.sessionService.getCurrentLoginInformations().subscribe({
+      next: (res) => {
+        this.email = res.user.emailAddress;
+        this.loadCourses();
+        this.loadEnrolledCourses();
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  loadCourses() {
+    this.courseService.getAllCourses().subscribe({
+      next: (res: any) => {
+        this.courses = res;
+        this.changeDetector.detectChanges();
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  loadEnrolledCourses() {
+    this.stuCourseService.getEnrolledCourses(this.email).subscribe({
+      next: (res: any) => {
+        this.enrolledCourses = res;
+        this.changeDetector.detectChanges();
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  isEnrolled(course: any): boolean {
+    return this.enrolledCourses?.some((c: any) => c.id === course.id);
+  }
+
+  enrollCourse(id:number) {
+    this.stuCourseService.enrollInCourse(this.email,id).subscribe({
+        next:(res:any)=>{
+            this.loadEnrolledCourses();
+            this.changeDetector.detectChanges();
+        },
+        error:(err)=>{
+            console.log(err);
+        }
+    })
+  }
 }
