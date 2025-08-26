@@ -16,6 +16,7 @@ export class CourseComponent implements OnInit{
    addModel:boolean = false;
    editModel:boolean=false;
    viewModel:boolean=false;
+   searchTerm=''
 
    currentPage = 1;
    itemPage = 10;
@@ -64,9 +65,19 @@ export class CourseComponent implements OnInit{
         })
    }
 
+   get filteredCourses(){
+         if (!this.searchTerm.trim()) {
+          return this.courses;
+        }
+          const term = this.searchTerm.toLowerCase();
+         return this.courses.filter(c=>
+          c.name.toLowerCase().includes(term)
+        );
+   }
+
    get paginatedCourses(){
     const start = (this.currentPage-1)*this.itemPage;
-    return this.courses.slice(start,start+this.itemPage);
+    return this.filteredCourses.slice(start,start+this.itemPage);
    }
    get totalPages(){
     return Math.ceil(this.courses.length/this.itemPage);

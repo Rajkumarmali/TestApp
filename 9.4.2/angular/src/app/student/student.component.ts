@@ -14,6 +14,7 @@ export class StudentComponent implements OnInit {
   students: any[] = [];
   studentProfile:any=null;
   studentCourses:any[]=[];
+  searchTerm='';
   addModel: boolean = false;
   editModel: boolean = false;
   viewModel: boolean = false;
@@ -53,9 +54,22 @@ export class StudentComponent implements OnInit {
     });
   }
 
+  get filteredStudents() {
+  if (!this.searchTerm.trim()) {
+    return this.students;
+  }
+  const term = this.searchTerm.toLowerCase();
+  return this.students.filter(s =>
+    s.firstName.toLowerCase().includes(term) ||
+    s.lastName.toLowerCase().includes(term) ||
+    s.email.toLowerCase().includes(term) ||
+    s.phoneNumber.toLowerCase().includes(term)
+  );
+}
+
   get paginatedStudents() {
      const start = (this.currentPage-1)*this.itemPage;
-     return this.students.slice(start,start+this.itemPage);
+     return this.filteredStudents.slice(start,start+this.itemPage);
   }
    get totalPages(){
     return Math.ceil(this.students.length/this.itemPage);

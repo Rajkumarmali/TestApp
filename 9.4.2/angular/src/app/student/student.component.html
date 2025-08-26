@@ -1,10 +1,21 @@
 <div class="container mt-4">
 
-    <!-- Add Student Button -->
-    <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-primary shadow-sm" (click)="openAddModal()">
-            <i class="bi bi-plus-lg me-1"></i> Add Student
-        </button>
+    <div class="row mb-3 align-items-center">
+        <!-- Search Bar (Left) -->
+        <div class="col-md-6">
+            <input type="text"
+                class="form-control shadow-sm"
+                placeholder="Search by name, email, or phone"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="currentPage = 1">
+        </div>
+
+        <!-- Add Student Button (Right Corner) -->
+        <div class="col-md-6 d-flex justify-content-end">
+            <button class="btn btn-primary shadow-sm" (click)="openAddModal()">
+                <i class="bi bi-plus-lg me-1"></i> Add Student
+            </button>
+        </div>
     </div>
 
     <!-- Student Table -->

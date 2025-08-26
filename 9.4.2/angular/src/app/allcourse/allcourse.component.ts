@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseServicesServiceProxy, StuCourseServicesServiceProxy, SessionServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FormsModule } from '@node_modules/@angular/forms';
 
 @Component({
   selector: 'app-allcourse',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './allcourse.component.html',
   styleUrls: ['./allcourse.component.css']
 })
@@ -25,6 +26,7 @@ export class AllcourseComponent implements OnInit {
   courses: any[] = [];
   enrolledCourses: any[] = [];
   email: string = '';
+  searchTerm=''
 
   ngOnInit(): void {
     this.loadEmailAndCourses();
@@ -51,9 +53,19 @@ export class AllcourseComponent implements OnInit {
     });
   }
 
+   get filteredCourses(){
+         if (!this.searchTerm.trim()) {
+          return this.courses;
+        }
+          const term = this.searchTerm.toLowerCase();
+         return this.courses.filter(c=>
+          c.name.toLowerCase().includes(term)
+        );
+   }
+
   get paginatedCourse() {
     const start = (this.currentPage-1)*this.itemPage;
-    return this.courses.slice(start,start+this.itemPage);
+    return this.filteredCourses.slice(start,start+this.itemPage);
   }
 
   get totalPages(){
