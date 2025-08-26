@@ -23,8 +23,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let course of courses; index as i">
-                        <td>{{ i + 1 }}.</td>
+                    <tr *ngFor="let course of paginatedCourses; index as i">
+                        <td>{{(currentPage-1)*itemPage+i+1}}.</td>
                         <td>{{ course.name }}</td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-outline-info me-1"
@@ -153,3 +153,38 @@
     </div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="viewModel"></div>
+
+<nav class="fixed-bottom bg-white py-2 shadow-sm" *ngIf="totalPages > 1">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link"
+                (click)="changePage(currentPage - 1)">«</button>
+        </li>
+        <li class="page-item" [class.active]="currentPage === 1">
+            <button class="page-link" (click)="changePage(1)">1</button>
+        </li>
+        <li class="page-item disabled" *ngIf="currentPage > 3">
+            <span class="page-link">...</span>
+        </li>
+        <ng-container *ngFor="let page of pages">
+            <li class="page-item" [class.active]="currentPage === page">
+                <button class="page-link" (click)="changePage(page)">
+                    {{ page }}
+                </button>
+            </li>
+        </ng-container>
+        <li class="page-item disabled" *ngIf="currentPage < totalPages -2">
+            <span class="page-link">...</span>
+        </li>
+        <li class="page-item" [class.active]="currentPage === totalPages">
+            <button class="page-link" (click)="changePage(totalPages)">
+                {{ totalPages }}
+            </button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link"
+                (click)="changePage(currentPage + 1)">»</button>
+        </li>
+
+    </ul>
+</nav>

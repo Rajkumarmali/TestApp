@@ -26,6 +26,11 @@ export class StudentComponent implements OnInit {
    phoneNumber: ''
   }
 
+
+  currentPage = 1;
+  itemPage = 10;
+  pages: number[] = [];
+
   constructor(
     private studentService: StudentServicesServiceProxy,
     private studentServices:StudentServicesServiceProxy,
@@ -47,6 +52,21 @@ export class StudentComponent implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
+  get paginatedStudents() {
+     const start = (this.currentPage-1)*this.itemPage;
+     return this.students.slice(start,start+this.itemPage);
+  }
+   get totalPages(){
+    return Math.ceil(this.students.length/this.itemPage);
+   }
+
+
+   changePage(page:number){
+    if(page>=1 && page<=this.totalPages){
+      this.currentPage = page;
+    }
+   }
 
   openAddModal() {
      this.addModel = true;

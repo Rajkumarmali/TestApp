@@ -1,9 +1,13 @@
-<div class="wrapper">
+<div class="wrapper d-flex flex-column h-100 overflow-hidden">
   <app-header></app-header>
   <sidebar></sidebar>
-  <div class="content-wrapper">
+
+  <!-- Content wrapper fills remaining space and scrolls internally -->
+  <div class="content-wrapper flex-grow-1 overflow-auto">
     <router-outlet></router-outlet>
   </div>
+
   <app-footer></app-footer>
+
   <div id="sidebar-overlay" (click)="toggleSidebar()"></div>
 </div>

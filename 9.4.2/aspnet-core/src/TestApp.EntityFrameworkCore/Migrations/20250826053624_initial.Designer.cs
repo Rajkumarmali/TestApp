@@ -12,7 +12,7 @@ using TestApp.EntityFrameworkCore;
 namespace TestApp.Migrations
 {
     [DbContext(typeof(TestAppDbContext))]
-    [Migration("20250824085415_initial")]
+    [Migration("20250826053624_initial")]
     partial class initial
     {
         /// <inheritdoc />

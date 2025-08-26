@@ -18,6 +18,10 @@ export class AllcourseComponent implements OnInit {
     private changeDetector: ChangeDetectorRef
   ) {}
 
+  currentPage = 1;
+  itemPage = 10;
+  pages:number[]=[];
+
   courses: any[] = [];
   enrolledCourses: any[] = [];
   email: string = '';
@@ -46,6 +50,20 @@ export class AllcourseComponent implements OnInit {
       error: (err) => console.log(err)
     });
   }
+
+  get paginatedCourse() {
+    const start = (this.currentPage-1)*this.itemPage;
+    return this.courses.slice(start,start+this.itemPage);
+  }
+
+  get totalPages(){
+    return Math.ceil(this.courses.length/this.itemPage);
+  }
+ changePage(page:number){
+    if(page>=1 && page<=this.totalPages){
+      this.currentPage = page;
+    }
+   }
 
   loadEnrolledCourses() {
     this.stuCourseService.getEnrolledCourses(this.email).subscribe({

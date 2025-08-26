@@ -17,6 +17,9 @@ export class CourseComponent implements OnInit{
    editModel:boolean=false;
    viewModel:boolean=false;
 
+   currentPage = 1;
+   itemPage = 10;
+   pages:number[]=[];
 
    newCourse={
        name:'',
@@ -61,6 +64,18 @@ export class CourseComponent implements OnInit{
         })
    }
 
+   get paginatedCourses(){
+    const start = (this.currentPage-1)*this.itemPage;
+    return this.courses.slice(start,start+this.itemPage);
+   }
+   get totalPages(){
+    return Math.ceil(this.courses.length/this.itemPage);
+   }
+   changePage(page:number){
+    if(page>=1 && page<=this.totalPages){
+      this.currentPage = page;
+    }
+   }
    saveCourse():void{
       const courseDto = new CreateCouresDto();
       courseDto.name = this.newCourse.name;
