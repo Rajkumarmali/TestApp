@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Domain.Repositories;
+using Abp.Net.Mail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TestApp.Authorization.Roles;
 using TestApp.Authorization.Users;
 using TestApp.DTOs;
 using TestApp.Manager.interfaces;
 using TestApp.Models;
-
+using TestApp.MultiTenancy;
 namespace TestApp.Manager.Services;
 
 public class StudentServices : ApplicationService, IStudent
@@ -20,18 +24,28 @@ public class StudentServices : ApplicationService, IStudent
     private readonly IRepository<Student, long> _studentRepository;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
+    private readonly TenantManager _tenantManager;
+
+
+
 
     public StudentServices(IRepository<Student, long> studentRepository, UserManager userManager,
-        RoleManager roleManager)
+        RoleManager roleManager, IEmailSender emailSender, TenantManager tenantManager)
     {
         _studentRepository = studentRepository;
         _userManager = userManager;
         _roleManager = roleManager;
+        _tenantManager = tenantManager;
+
     }
     public async Task<StudentCreateDto> CreateStudent([FromBody] StudentCreateDto dto)
     {
         try
         {
+
+            string fromMail = "rajkumarmali2121@gmail.com";
+            string fromPassword = "mhvy yezv dddv yyro";
+
             var user = new User
             {
                 TenantId = AbpSession.TenantId,
@@ -51,6 +65,35 @@ public class StudentServices : ApplicationService, IStudent
             await _userManager.AddToRoleAsync(user, "Student");
 
 
+            var year = DateTime.UtcNow.Year.ToString().Substring(2);
+            int tenantId = AbpSession.TenantId ?? 1;
+            var tenant = await _tenantManager.GetByIdAsync(tenantId);
+
+            var prefix = tenant.Name.Length >= 3
+                  ? tenant.Name.Substring(0, 3).ToUpper()
+                  : tenant.Name.ToUpper();
+
+            // Find last student with same Year + Prefix
+            var lastStudent = await _studentRepository
+                .GetAll()
+                .Where(s => s.StudentId.StartsWith(year + prefix))
+                .OrderByDescending(s => s.StudentId)
+                .FirstOrDefaultAsync();
+
+            int nextSeq = 1;
+            if (lastStudent != null)
+            {
+                var lastSeqStr = lastStudent.StudentId.Substring((year + prefix).Length);
+                if (int.TryParse(lastSeqStr, out int lastSeq))
+                {
+                    nextSeq = lastSeq + 1;
+                }
+            }
+
+            var sequence = nextSeq.ToString("D2"); // 01, 02, ...
+            string studentId = $"{year}{prefix}{sequence}";
+
+
             var Student = new Student
             {
                 TenantId = AbpSession.TenantId ?? 1,
@@ -58,8 +101,27 @@ public class StudentServices : ApplicationService, IStudent
                 LastName = dto.LastName,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
+                StudentId = studentId
             };
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(fromMail);
+            message.Subject = "Test Subject";
+            message.To.Add("2021pcecrrajkumar013@poornima.org");
+            message.Body = $"Hello {dto.FirstName}, your student account has been created successfully.\n" +
+                            $"Your Student ID is: {studentId}";
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(fromMail, fromPassword),
+                EnableSsl = true
+            };
+            smtpClient.Send(message);
+
             await _studentRepository.InsertAsync(Student);
+
+
             return dto;
         }
         catch (Exception ex)
@@ -79,7 +141,8 @@ public class StudentServices : ApplicationService, IStudent
                 FirstName = s.FirstName,
                 LastName = s.LastName,
                 Email = s.Email,
-                PhoneNumber = s.PhoneNumber
+                PhoneNumber = s.PhoneNumber,
+                StudentId = s.StudentId
             }).ToList();
             return result;
         }
@@ -140,7 +203,8 @@ public class StudentServices : ApplicationService, IStudent
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 Email = student.Email,
-                PhoneNumber = student.PhoneNumber
+                PhoneNumber = student.PhoneNumber,
+                StudentId = student.StudentId
             };
             return resutl;
         }

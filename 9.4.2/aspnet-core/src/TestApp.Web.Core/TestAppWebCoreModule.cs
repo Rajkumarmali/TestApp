@@ -13,6 +13,10 @@ using TestApp.Authentication.JwtBearer;
 using TestApp.Configuration;
 using TestApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Abp.MailKit;
+using Abp.Net.Mail;
+using Abp.Configuration.Startup;
+using Abp.Net.Mail.Smtp;
 
 namespace TestApp
 {
@@ -20,7 +24,8 @@ namespace TestApp
          typeof(TestAppApplicationModule),
          typeof(TestAppEntityFrameworkModule),
          typeof(AbpAspNetCoreModule)
-        ,typeof(AbpAspNetCoreSignalRModule)
+        , typeof(AbpAspNetCoreSignalRModule),
+          typeof(AbpMailKitModule)
      )]
     public class TestAppWebCoreModule : AbpModule
     {
@@ -39,6 +44,8 @@ namespace TestApp
                 TestAppConsts.ConnectionStringName
             );
 
+
+
             // Use database for language management
             Configuration.Modules.Zero().LanguageManagement.EnableDbLocalization();
 
@@ -46,6 +53,8 @@ namespace TestApp
                  .CreateControllersForAppServices(
                      typeof(TestAppApplicationModule).GetAssembly()
                  );
+
+
 
             ConfigureTokenAuth();
         }

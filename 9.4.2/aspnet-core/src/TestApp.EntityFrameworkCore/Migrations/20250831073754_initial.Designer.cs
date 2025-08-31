@@ -12,7 +12,7 @@ using TestApp.EntityFrameworkCore;
 namespace TestApp.Migrations
 {
     [DbContext(typeof(TestAppDbContext))]
-    [Migration("20250826053624_initial")]
+    [Migration("20250831073754_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -1709,6 +1709,9 @@ namespace TestApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")

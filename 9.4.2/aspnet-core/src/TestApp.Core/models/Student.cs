@@ -12,6 +12,7 @@ namespace TestApp.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string StudentId { get; set; }
 
         public ICollection<StuCourse> StuCourses { get; set; }
     }

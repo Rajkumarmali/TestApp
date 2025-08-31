@@ -6,12 +6,13 @@ using TestApp.Authorization;
 namespace TestApp
 {
     [DependsOn(
-        typeof(TestAppCoreModule), 
+        typeof(TestAppCoreModule),
         typeof(AbpAutoMapperModule))]
     public class TestAppApplicationModule : AbpModule
     {
         public override void PreInitialize()
         {
+
             Configuration.Authorization.Providers.Add<TestAppAuthorizationProvider>();
         }
 
